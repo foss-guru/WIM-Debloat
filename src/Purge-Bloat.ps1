@@ -1,4 +1,4 @@
-### Customize Windows Setup with package provisioning, component base reset, and configuration sets.
+### Customize Windows Setup with package provisioning, component base reset, and an answer file.
 Write-Output "**** Welcome to Win Setup Prep Utility - the purist-friendly Windows debloater :) ****"
 Write-Output "Usage: Insert a setup drive from MCT or Rufus to run the script against. (ESD-USB)"
 Write-Output "You can also mount a standalone ISO. (ESD-ISO)"
