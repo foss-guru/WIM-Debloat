@@ -255,7 +255,7 @@ if ($choice -eq 'y') {
     if ($selectorISO.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
         Copy-Item -Path "$($SRC[0]):\*" -Destination "$BUILD" -Recurse
         Copy-Item -Path "$PSCommandPath\..\..\config\`$OEM`$" -Destination "$BUILD" -Recurse
-        & "$PSCommandPath\..\..\lib\oscdimg.exe" -m -o -u2 -udfver102 "-bootdata:2#p0,e,b$($BUILD)\boot\etfsboot.com#pEF,e,b$($BUILD)\efi\microsoft\boot\efisys.bin" "$BUILD" "$($selectorISO.SelectedPath)\Win11_Debloat.iso"
+        & "$PSCommandPath\..\..\lib\oscdimg.exe" -m -o -u2 -udfver102 "-bootdata:2#p0,e,b$($BUILD)\boot\etfsboot.com#pEF,e,b$($BUILD)\efi\microsoft\boot\efisys.bin" "$BUILD" "$($selectorISO.SelectedPath)\Win11-Debloat.iso"
     }
     if (Test-Path -Path ($selectorISO.SelectedPath + "\ESD-ISO_Debloat.iso")) {
         Write-Output "New ISO saved successfully."
