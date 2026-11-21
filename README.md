@@ -63,7 +63,7 @@ Ever wondered what Rufus does exactly? How does it come about giving you those g
 ### Built for power users who have made the plunge into Pro Edition 🌊
 
 #### Answer File Magic 🪄
-You will find Unattend.xml under $OEM$\\$$. This is largely verbatim what Rufus generates but with regedits removed and utilizing group policies instead...
+You will find Unattend.xml under `$OEM$\$$`. This is largely verbatim what Rufus generates but with regedits removed and utilizing group policies instead...
 
 #### Group Policy Management 🧰
 You can import your own group policy by adding it to the distribution share under config/$OEM$/$1/Deploy/GPO
