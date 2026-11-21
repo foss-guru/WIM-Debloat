@@ -49,7 +49,7 @@ This is the checklist that summarizes what to purge and what to leave behind.
 
 > Re: Removals - Capabilities and optional features carry no benefit toward base install disk footprint past Win10.
 
-### 3. The $OEM$ Directory 🔧
+### 3. The `$OEM$` Directory 🔧
 
 Configuration sets to the root of the drive, consisting of:
 - An answer file (Unattend.xml)
