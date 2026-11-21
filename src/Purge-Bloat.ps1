@@ -199,7 +199,7 @@ Write-Output ("Elapsed time (recompression): " + (($finish - $start).TotalMinute
 Write-Output ("Results exported to: " + ($WIM -replace '\\install.wim', ''))
 Get-ChildItem -Path ($WIM -replace '\\install.wim', '') | Select-Object Name, Length, Directory, LastWriteTime | Format-Table
 
-# STAGE 8: Write changes to disk
+# FINAL STAGE: Write changes to disk
 $TARGET = Get-Volume -FileSystemLabel "ESD-USB" -ErrorAction SilentlyContinue | Select-Object DriveLetter -ExpandProperty DriveLetter
 if ($NO_IMPORT -ne 'y') {
     if (-not $TARGET) {
@@ -223,7 +223,7 @@ if ($NO_IMPORT -ne 'y') {
     }
 }
 
-# STAGE 9: Backup WIM
+# ADDITIONAL STAGE 1: Backup WIM
 if ($NO_IMPORT -ne 'y') {
     $choice = Read-Host "Would you like to save a copy of the new image locally? (Y/N)"
     if ($choice -eq 'y') {
@@ -246,7 +246,7 @@ if ($NO_IMPORT -ne 'y') {
     }
 }
 
-# FINAL STAGE: Build new ISO (optional)
+# ADDITIONAL STAGE 2: Build new ISO (optional)
 $choice = Read-Host "Would you like to build your own custom ISO? (Y/N)"
 if ($choice -eq 'y') {
     $selectorISO = New-Object System.Windows.Forms.FolderBrowserDialog
