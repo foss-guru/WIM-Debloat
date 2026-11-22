@@ -9,13 +9,13 @@ pause
 Write-Output "Scanning for compatible volumes..."
 if (Get-Volume -FileSystemLabel "ESD-ISO" -ErrorAction SilentlyContinue) {
     $SRC = Get-Volume -FileSystemLabel "ESD-ISO" | Select-Object DriveLetter -ExpandProperty DriveLetter
-    if ($SRC -is [array]) { Write-Output "WARNING - Multiple virtual DVDs detected. Exiting..."; exit }
+    if ($SRC -is [array]) { Write-Warning "Multiple virtual DVDs detected. Exiting..."; exit }
     if (-not (Get-Volume -FileSystemLabel "ESD-USB" -ErrorAction SilentlyContinue | Select-Object DriveLetter -ExpandProperty DriveLetter))
-    { Write-Output "WARNING - No target drive detected. If you want to modify one directly, make sure it's inserted before the write stage." }
+    { Write-Warning "No target drive detected. If you want to modify one directly, make sure it's inserted before the write stage." }
 } else {
     $SRC = Get-Volume -FileSystemLabel "ESD-USB" -ErrorAction SilentlyContinue | Select-Object DriveLetter -ExpandProperty DriveLetter
-    if (-not $SRC) { Write-Output "WARNING - No setup volumes detected. Exiting..."; exit }
-    if ($SRC -is [array]) { Write-Output "WARNING - Multiple setup drives detected. Exiting..."; exit }
+    if (-not $SRC) { Write-Warning "No setup volumes detected. Exiting..."; exit }
+    if ($SRC -is [array]) { Write-Warning "Multiple setup drives detected. Exiting..."; exit }
 }
 $SRC = Get-ChildItem -Path "${SRC}:\sources\install.*" | Select-Object -First 1 -ExpandProperty FullName
 
@@ -92,7 +92,8 @@ if (Get-WindowsImage -Mounted) { Dismount-WindowsImage -Path (Get-WindowsImage -
 if (Test-Path -Path "$MOUNT") { Remove-Item -Path "$MOUNT" -Recurse; Clear-WindowsCorruptMountPoint }
 New-Item -Path ($WIM -replace '\\install.wim', '') -ItemType Directory -ErrorAction SilentlyContinue
 New-Item -Path "$MOUNT" -ItemType Directory -ErrorAction SilentlyContinue
-New-Item -Path "$BUILD" -ItemType Directory -ErrorAction SilentlyContinue
+if (Test-Path -Path "$BUILD") { Remove-Item -Path "$BUILD" -Recurse }
+New-Item -Path "$BUILD" -ItemType Directory
 $start = Get-Date
 
 # STAGE 3: Import to WIM file
@@ -221,6 +222,9 @@ if ($NO_IMPORT -ne 'y') {
         $elapsed = ($finish - $start) + $elapsed
         Write-Output ("Elapsed time (overwrite): " + (($finish - $start).TotalMinutes -replace '\.\d+', '') + " min. ")
     }
+} else {
+    Copy-Item -Path "$PSCommandPath\..\..\config\`$OEM`$" -Destination "$($SRC[0]):\sources" -Recurse -Force
+    Write-Output "All done! Setup drive mods complete."
 }
 
 # ADDITIONAL STAGE 1: Backup WIM
@@ -237,7 +241,7 @@ if ($NO_IMPORT -ne 'y') {
                 Write-Output ("Results saved to: " + $selectorWIM.SelectedPath);
                 Get-ChildItem -Path $selectorWIM.SelectedPath | Select-Object Name, Length, Directory, LastWriteTime | Format-Table
             } else {
-                Write-Output "WARNING - Backup not finished. Please try again. Skipping cleanup..."
+                Write-Warning "Backup didn't finish. Please try again. Skipping cleanup..."
                 Write-Output ("Results exported to: " + ($WIM -replace '\\install.wim', ''))
                 Get-ChildItem -Path ($WIM -replace '\\install.wim', '') | Select-Object Name, Length, Directory, LastWriteTime | Format-Table
                 exit
@@ -260,7 +264,7 @@ if ($choice -eq 'y') {
     if (Test-Path -Path ($selectorISO.SelectedPath + "\WIM-Debloat.iso")) {
         Write-Output "New ISO saved successfully."
     } else {
-        Write-Output "WARNING - Something went wrong. Check source permissions."
+        Write-Warning "Something went wrong. Check source permissions."
     }
 }
 
