@@ -3,7 +3,7 @@
 
 A pre-install focused script to modify your USB installer and optionally build a custom ISO in one fell swoop. Scans for compatible image formats like WIM, SWM, and ESD.
 
-Select your Win edition to generate a summary of AppX packages included for that image with an easy checkbox list to make changes. Once finished, you can choose whether to write changes back to the drive or to save results into a raw WIM file for backup, or both. 
+Select your Win edition to generate a summary of AppX packages included for that image with an easy checkbox list to make changes. Once finished, you can choose whether to write changes back to the drive or save results into a raw WIM file for backup, or both. 
 
 Stay field ready and never guess about Media Creation Tool updates again!
 
